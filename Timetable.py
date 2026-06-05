@@ -1,316 +1,338 @@
 import tkinter as tk
+from tkinter import ttk
 import random
 
-# ---------------------------
-# THEORY ROOMS
-# ---------------------------
-
-THEORY_ROOMS = [f"E-{i}" for i in range(101, 112)] + \
-               [f"E-{i}" for i in range(201, 212)] + \
-               [f"E-{i}" for i in range(301, 312)]
-
-# ---------------------------
-# LAB ROOMS
-# ---------------------------
-
-LAB_ROOMS = [
-    "Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5",
-    "AI Lab", "DLD Lab", "Web Lab", "AP Lab, CN Lab"
-]
-
-# ---------------------------
-# LAB CONSTRAINTS
-# ---------------------------
+THEORY_ROOMS = []
+for number in range(101, 112):
+    THEORY_ROOMS.append("E-" + str(number))
+for number in range(201, 212):
+    THEORY_ROOMS.append("E-" + str(number))
+for number in range(301, 312):
+    THEORY_ROOMS.append("E-" + str(number))
+    
+LAB_ROOMS = ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab", "DLD Lab", "Web Lab", "CN Lab"]
 
 LAB_MAPPING = {
-    "AP-L(A)": ["AP Lab"],
+    "AP-L(A)": ["AP Lab"], 
     "AP-L(B)": ["AP Lab"],
     "CP-L": ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab"],
     "IICT-L": ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab"],
     "OOP-L": ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab"],
-    "DD-L(A)": ["DLD Lab"],
+    "DD-L(A)": ["DLD Lab"], 
     "DD-L(B)": ["DLD Lab"],
     "COAL-L": ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab"],
     "PAI-L": ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab"],
     "DSA-L": ["Lab 1", "Lab 2", "Lab 3", "Lab 4", "Lab 5", "AI Lab"],
-    "DBMS-L": ["Web Lab"],
-    "DCN-L(A)": ["CN Lab"],
-    "DCN-L(B)": ["CN Lab"],
-    "AI-L" : ["AI Lab"],
-    }
-
-# ---------------------------
-# TIME
-# ---------------------------
-
-TIME_SLOTS = list(range(10))
-TIME_LABELS = ["08:30","09:30","10:30","11:30","12:30","13:30","14:30","15:30","16:30", "17:30"]
-
-DAYS_FULL = ["Mon", "Tue", "Wed", "Thu", "Fri"]
-DAYS_NO_FRIDAY = ["Mon", "Tue", "Wed", "Thu"]
-
-# ---------------------------
-# YOUR DATA (UNCHANGED)
-# ---------------------------
+    "DBMS-L": ["Web Lab"], 
+    "DCN-L(A)": ["CN Lab"], 
+    "DCN-L(B)": ["CN Lab"], 
+    "AI-L": ["AI Lab"],
+}
 
 CLASSES = {
     "BSAI-1": {
-        "PPE": {"teacher": "Dr. Hassan", "h": 2, "type": "theory"},
-        "IICT-L": {"teacher": "Dr. Imran", "h": 3, "type": "lab"},
-        "IICT": {"teacher": "Ms. Munazza", "h": 3, "type": "theory"},
-        "DM": {"teacher": "Ms. Munazza", "h": 3, "type": "theory"},
-        "CP-L": {"teacher": "Ms. Zahida", "h": 3, "type": "lab"},
-        "Tajweed": {"teacher": "Dr. Nawaz", "h": 1, "type": "theory"},
-        "AP": {"teacher": "Dr. Ali", "h": 3, "type": "theory"},
-        "AP-L(A)": {"teacher": "Sir Fahad", "h": 3, "type": "lab"},
-        "AP-L(B)": {"teacher": "Sir Anas", "h": 3, "type": "lab"},
-        "CP": {"teacher": "Ms. Salas", "h": 3, "type": "theory"},
-        "IS": {"teacher": "Sir Anwar", "h": 2, "type": "theory"},
+        "PPE": {"teacher": "Dr. Hassan", "hours_needed": 2, "type": "theory"},
+        "IICT-L": {"teacher": "Dr. Imran", "hours_needed": 3, "type": "lab"},
+        "IICT": {"teacher": "Ms. Munazza", "hours_needed": 3, "type": "theory"},
+        "DM": {"teacher": "Ms. Munazza", "hours_needed": 3, "type": "theory"},
+        "CP-L": {"teacher": "Ms. Zahida", "hours_needed": 3, "type": "lab"},
+        "Tajweed": {"teacher": "Dr. Nawaz", "hours_needed": 1, "type": "theory"},
+        "AP": {"teacher": "Dr. Ali", "hours_needed": 3, "type": "theory"},
+        "AP-L(A)": {"teacher": "Sir Fahad", "hours_needed": 3, "type": "lab"},
+        "AP-L(B)": {"teacher": "Sir Anas", "hours_needed": 3, "type": "lab"},
+        "CP": {"teacher": "Ms. Salas", "hours_needed": 3, "type": "theory"},
+        "IS": {"teacher": "Sir Anwar", "hours_needed": 2, "type": "theory"},
     },
-
     "BSAI-2": {
-        "DD": {"teacher": "Ms. Amna", "h": 3, "type": "theory"},
-        "PS": {"teacher": "Engr. Reema", "h": 3, "type": "theory"},
-        "OOP-L": {"teacher": "Dr. Imran", "h": 3, "type": "lab"},
-        "OOP": {"teacher": "Sir Ali", "h": 3, "type": "theory"},
-        "DD-L(A)": {"teacher": "Ms. Amna", "h": 3, "type": "lab"},
-        "DD-L(B)": {"teacher": "Sir Haroon", "h": 3, "type": "lab"},
-        "FE": {"teacher": "Sir Chauhan", "h": 3, "type": "theory"},
-        "PST": {"teacher": "Ms. Farah", "h": 2, "type": "theory"},
-        "UQ-1": {"teacher": "Sir Muneeb", "h": 1, "type": "theory"},
-        "AC&AG": {"teacher": "Ms. Sadia", "h": 3, "type": "theory"},
+        "DD": {"teacher": "Ms. Amna", "hours_needed": 3, "type": "theory"},
+        "PS": {"teacher": "Engr. Reema", "hours_needed": 3, "type": "theory"},
+        "OOP-L": {"teacher": "Dr. Imran", "hours_needed": 3, "type": "lab"},
+        "OOP": {"teacher": "Sir Ali", "hours_needed": 3, "type": "theory"},
+        "DD-L(A)": {"teacher": "Ms. Amna", "hours_needed": 3, "type": "lab"},
+        "DD-L(B)": {"teacher": "Sir Haroon", "hours_needed": 3, "type": "lab"},
+        "FE": {"teacher": "Sir Chauhan", "hours_needed": 3, "type": "theory"},
+        "PST": {"teacher": "Ms. Farah", "hours_needed": 2, "type": "theory"},
+        "UQ-1": {"teacher": "Sir Muneeb", "hours_needed": 1, "type": "theory"},
+        "AC&AG": {"teacher": "Ms. Sadia", "hours_needed": 3, "type": "theory"},
     },
-
     "BSAI-3": {
-        "DSA": {"teacher": "Dr. Bilal", "h": 3, "type": "theory"},
-        "DSA-L": {"teacher": "Dr. Bilal", "h": 3, "type": "lab"},
-        "COAL": {"teacher": "Sir Asim", "h": 2, "type": "theory"},
-        "COAL-L": {"teacher": "Sir Asim", "h": 3, "type": "lab"},
-        "PAI": {"teacher": "Dr. Sana", "h": 3, "type": "theory"},
-        "PAI-L": {"teacher": "Dr. Sana", "h": 3, "type": "lab"},
-        "LA": {"teacher": "Dr. Kamran", "h": 3, "type": "theory"},
-        "CS": {"teacher": "Sir Noman", "h": 2, "type": "theory"},
-        "UQ-2": {"teacher": "Dr. Nawaz", "h": 1, "type": "theory"},
-        "CCE": {"teacher": "Ms. Salas", "h": 2, "type": "theory"},
+        "DSA": {"teacher": "Dr. Bilal", "hours_needed": 3, "type": "theory"},
+        "DSA-L": {"teacher": "Dr. Bilal", "hours_needed": 3, "type": "lab"},
+        "COAL": {"teacher": "Sir Asim", "hours_needed": 2, "type": "theory"},
+        "COAL-L": {"teacher": "Sir Asim", "hours_needed": 3, "type": "lab"},
+        "PAI": {"teacher": "Dr. Sana", "hours_needed": 3, "type": "theory"},
+        "PAI-L": {"teacher": "Dr. Sana", "hours_needed": 3, "type": "lab"},
+        "LA": {"teacher": "Dr. Kamran", "hours_needed": 3, "type": "theory"},
+        "CS": {"teacher": "Sir Noman", "hours_needed": 2, "type": "theory"},
+        "UQ-2": {"teacher": "Dr. Nawaz", "hours_needed": 1, "type": "theory"},
+        "CCE": {"teacher": "Ms. Salas", "hours_needed": 2, "type": "theory"},
     },
-
     "BSAI-4": {
-        "DBMS": {"teacher": "Dr. Ayesha", "h": 3, "type": "theory"},
-        "DBMS-L": {"teacher": "Dr. Ayesha", "h": 3, "type": "lab"},
-        "ENT": {"teacher": "Ms. Farah", "h": 2, "type": "theory"},
-        "AI": {"teacher": "Dr. Bilal", "h": 3, "type": "theory"},
-        "AI-L": {"teacher": "Dr. Bilal", "h": 3, "type": "lab"},
-        "CT": {"teacher": "Sir Noman", "h": 3, "type": "theory"},
-        "DCN": {"teacher": "Dr. Kamran", "h": 3, "type": "theory"},
-        "DCN-L(A)": {"teacher": "Dr. Kamran", "h": 3, "type": "lab"},
-        "DCN-L(B)": {"teacher": "Dr. Kamran", "h": 3, "type": "lab"},
-        "UQ-3": {"teacher": "Dr. Nawaz", "h": 1, "type": "theory"},
+        "DBMS": {"teacher": "Dr. Ayesha", "hours_needed": 3, "type": "theory"},
+        "DBMS-L": {"teacher": "Dr. Ayesha", "hours_needed": 3, "type": "lab"},
+        "ENT": {"teacher": "Ms. Farah", "hours_needed": 2, "type": "theory"},
+        "AI": {"teacher": "Dr. Bilal", "hours_needed": 3, "type": "theory"},
+        "AI-L": {"teacher": "Dr. Bilal", "hours_needed": 3, "type": "lab"},
+        "CT": {"teacher": "Sir Noman", "hours_needed": 3, "type": "theory"},
+        "DCN": {"teacher": "Dr. Kamran", "hours_needed": 3, "type": "theory"},
+        "DCN-L(A)": {"teacher": "Dr. Kamran", "hours_needed": 3, "type": "lab"},
+        "DCN-L(B)": {"teacher": "Dr. Kamran", "hours_needed": 3, "type": "lab"},
+        "UQ-3": {"teacher": "Dr. Nawaz", "hours_needed": 1, "type": "theory"},
     }
 }
 
-# ---------------------------
-# CSP GENERATOR
-# ---------------------------
+def generate_timetable_logic(active_days, total_slots_available):
+    for attempt in range(200):
+        timetable = {}
+        for class_name in CLASSES:
+            day_map = {}
+            for day_name in active_days:
+                day_map[day_name] = [None] * total_slots_available
+            timetable[class_name] = day_map
 
-def get_allowed_rooms(sub, typ):
-    if typ == "lab":
-        return LAB_MAPPING.get(sub, LAB_ROOMS)
-    return THEORY_ROOMS
+        teacher_busy_status = {}
+        room_busy_status = {}
 
-def generate_solution(include_friday=True, attempts=200):
-    days = DAYS_FULL if include_friday else DAYS_NO_FRIDAY
+        # --- DYNAMIC TARGET DAYS OFF CONFIGURATION ---
+        # For each class, pre-determine which days we WANT to use and which days we WANT TO AVOID.
+        class_day_priorities = {}
+        for class_name in CLASSES:
+            if len(active_days) >= 6:
+                days_off_target = 2  # Try to give 2 days off if week layout is large
+            elif len(active_days) >= 4:
+                days_off_target = 1  # Try to give 1 day off for standard 4-5 active days
+            else:
+                days_off_target = 0
 
-    for _ in range(attempts):
+            shuffled_active = random.sample(active_days, len(active_days))
+            if days_off_target > 0:
+                preferred = shuffled_active[:-days_off_target]
+                avoided = shuffled_active[-days_off_target:]
+            else:
+                preferred = shuffled_active
+                avoided = []
+            class_day_priorities[class_name] = (preferred, avoided)
+        # ---------------------------------------------
 
-        timetable = {cls: {d: [None]*10 for d in days} for cls in CLASSES}
-        teacher_busy = {}
-        room_busy = {}
+        tasks_to_schedule = []
+        for class_name, subjects_dict in CLASSES.items():
+            for subject_name, subject_info in subjects_dict.items():
+                tasks_to_schedule.append((class_name, subject_name, subject_info))
+        
+        random.shuffle(tasks_to_schedule)
 
-        items = []
-        for cls, subs in CLASSES.items():
-            for sub, info in subs.items():
-                items.append((cls, sub, info))
-
-        random.shuffle(items)
-
-        def can_place(cls, sub, info, day, start, room):
-            length = 3 if info["type"] == "lab" else info["h"]
-            teacher = info["teacher"]
-
-            if start + length > 10:
+        def check_if_safe(class_name, subject_info, day, start_slot, room, duration):
+            if start_slot + duration > total_slots_available:
                 return False
-
-            for s in range(start, start+length):
-                if timetable[cls][day][s]:
+            
+            current_teacher = subject_info["teacher"]
+            for current_slot in range(start_slot, start_slot + duration):
+                if timetable[class_name][day][current_slot] is not None:
                     return False
-                if (teacher, day, s) in teacher_busy:
+                if (current_teacher, day, current_slot) in teacher_busy_status:
                     return False
-                if (room, day, s) in room_busy:
+                if (room, day, current_slot) in room_busy_status:
                     return False
-
             return True
 
-        def place(cls, sub, info, day, start, room):
-            length = 3 if info["type"] == "lab" else info["h"]
-            teacher = info["teacher"]
+        def mark_as_booked(class_name, subject_name, subject_info, day, start_slot, room, duration):
+            current_teacher = subject_info["teacher"]
+            for current_slot in range(start_slot, start_slot + duration):
+                timetable[class_name][day][current_slot] = (subject_name, room)
+                teacher_busy_status[(current_teacher, day, current_slot)] = True
+                room_busy_status[(room, day, current_slot)] = True
 
-            for s in range(start, start+length):
-                timetable[cls][day][s] = (sub, room)
-                teacher_busy[(teacher, day, s)] = True
-                room_busy[(room, day, s)] = True
+        overall_success_flag = True
+        for class_name, subject_name, subject_info in tasks_to_schedule:
+            is_lab_class = (subject_info["type"] == "lab")
 
-        success = True
-
-        for cls, sub, info in items:
-
-            # ---------------------------
-            # LABS (UNCHANGED)
-            # ---------------------------
-            if info["type"] == "lab":
-                placed = False
-
-                for day in random.sample(days, len(days)):
-                    for start in random.sample(TIME_SLOTS, len(TIME_SLOTS)):
-                        rooms = get_allowed_rooms(sub, info["type"])
-                        rooms = random.sample(rooms, len(rooms))
-
-                        for r in rooms:
-                            if can_place(cls, sub, info, day, start, r):
-                                place(cls, sub, info, day, start, r)
-                                placed = True
-                                break
-                        if placed:
-                            break
-                    if placed:
-                        break
-
-                if not placed:
-                    success = False
-                    break
-
-            # ---------------------------
-            # THEORY (NO 3 CONSECUTIVE)
-            # ---------------------------
+            if is_lab_class:
+                schedule_blocks = [3]  
             else:
-                hours_needed = info["h"]
+                hours = subject_info["hours_needed"]
+                if hours == 1:
+                    schedule_blocks = [1]
+                elif hours == 2:
+                    schedule_blocks = [2]  
+                elif hours == 3:
+                    schedule_blocks = [2, 1]  
+                elif hours == 4:
+                    schedule_blocks = [2, 2]  
+                else:
+                    schedule_blocks = [1] * hours
 
-                for _ in range(hours_needed):
-                    placed = False
+            used_days_for_subject = []
 
-                    for day in random.sample(days, len(days)):
-                        for start in random.sample(TIME_SLOTS, len(TIME_SLOTS)):
+            for current_duration in schedule_blocks:
+                subject_was_placed = False
 
-                            # 🚫 Prevent 3 consecutive slots of same subject
-                            if start >= 2:
-                                prev1 = timetable[cls][day][start-1]
-                                prev2 = timetable[cls][day][start-2]
-                                if prev1 and prev2 and prev1[0] == sub and prev2[0] == sub:
-                                    continue
+                # --- COMPACTED DAY SELECTION ---
+                # Retrieve the preferred and avoided day tiers for this specific class.
+                # Shuffle internally so there's still local variation, but preferred always come first.
+                pref_days, avoid_days = class_day_priorities[class_name]
+                shuffled_days = random.sample(pref_days, len(pref_days)) + random.sample(avoid_days, len(avoid_days))
+                # -------------------------------
 
-                            rooms = get_allowed_rooms(sub, info["type"])
-                            rooms = random.sample(rooms, len(rooms))
+                shuffled_slots = random.sample(range(total_slots_available), total_slots_available)
 
-                            for r in rooms:
-                                if can_place(
-                                    cls, sub,
-                                    {"teacher": info["teacher"], "h": 1, "type": "theory"},
-                                    day, start, r
-                                ):
-                                    place(
-                                        cls, sub,
-                                        {"teacher": info["teacher"], "h": 1, "type": "theory"},
-                                        day, start, r
-                                    )
-                                    placed = True
-                                    break
+                for day in shuffled_days:
+                    if len(schedule_blocks) > 1 and current_duration == 1 and day in used_days_for_subject:
+                        continue
+                    
+                    allowed_rooms = LAB_MAPPING.get(subject_name, LAB_ROOMS) if is_lab_class else THEORY_ROOMS
+                    shuffled_rooms = random.sample(allowed_rooms, len(allowed_rooms))
 
-                            if placed:
+                    for slot in shuffled_slots:
+                        for room in shuffled_rooms:
+                            if check_if_safe(class_name, subject_info, day, slot, room, current_duration):
+                                mark_as_booked(
+                                    class_name,
+                                    subject_name,
+                                    subject_info,
+                                    day,
+                                    slot,
+                                    room,
+                                    current_duration
+                                )
+                                used_days_for_subject.append(day)
+                                subject_was_placed = True
                                 break
-                        if placed:
+                        if subject_was_placed:
                             break
+                    if subject_was_placed: break
+                
+                if not subject_was_placed:
+                    overall_success_flag = False
+                    break
+            if not overall_success_flag: break
+        
+        if overall_success_flag:
+            return timetable
+    return None
 
-                    if not placed:
-                        success = False
-                        break
+class SimpleTimetableUI:
+    def __init__(self, main_window):
+        self.main_window = main_window
+        self.main_window.title("Timetable Generator")
+        self.main_window.geometry("1300x850")
 
-        if success:
-            return timetable, days
+        time_options = []
+        for hour in range(24):
+            time_options.append(f"{hour:02d}:00")
+            time_options.append(f"{hour:02d}:30")
 
-    return None, days
-# ---------------------------
-# SCROLLABLE GUI
-# ---------------------------
+        sidebar_frame = ttk.Frame(main_window, padding=20)
+        sidebar_frame.pack(side="left", fill="y")
 
-class App:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("CSP Timetable")
+        ttk.Label(sidebar_frame, text="SETTINGS", font=("Arial", 14, "bold")).pack(pady=10)
 
-        self.include_friday = tk.BooleanVar(value=True)
+        ttk.Label(sidebar_frame, text="Exclude These Days:").pack(anchor="w")
+        self.day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        self.exclude_check_variables = {}
+        for day in self.day_names:
+            check_var = tk.BooleanVar(value=False)
+            self.exclude_check_variables[day] = check_var
+            ttk.Checkbutton(sidebar_frame, text=day, variable=check_var).pack(anchor="w")
 
-        top = tk.Frame(root)
-        top.pack(fill="x")
+        ttk.Label(sidebar_frame, text="\nDay Starts At:").pack(anchor="w")
+        self.start_time_dropdown = ttk.Combobox(sidebar_frame, values=time_options, state="readonly")
+        self.start_time_dropdown.set("08:30")
+        self.start_time_dropdown.pack(fill="x")
 
-        tk.Checkbutton(top, text="Include Friday", variable=self.include_friday).pack(side="left")
-        tk.Button(top, text="Generate", command=self.generate).pack(side="left")
+        ttk.Label(sidebar_frame, text="Day Ends At:").pack(anchor="w")
+        self.end_time_dropdown = ttk.Combobox(sidebar_frame, values=time_options, state="readonly")
+        self.end_time_dropdown.set("16:30")
+        self.end_time_dropdown.pack(fill="x")
 
-        # Scroll setup
-        canvas = tk.Canvas(root)
-        scrollbar = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
+        ttk.Label(sidebar_frame, text="Slot Length (Minutes):").pack(anchor="w")
+        self.slot_length_dropdown = ttk.Combobox(sidebar_frame, values=[30, 60, 90], state="readonly")
+        self.slot_length_dropdown.set(60)
+        self.slot_length_dropdown.pack(fill="x")
 
-        self.scroll_frame = tk.Frame(canvas)
+        ttk.Button(sidebar_frame, text="GENERATE SCHEDULE", command=self.handle_generate_click).pack(pady=30, fill="x")
 
-        self.scroll_frame.bind(
-            "<Configure>",
-            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
-        )
+        self.display_canvas = tk.Canvas(main_window, bg="white")
+        self.display_canvas.pack(side="left", fill="both", expand=True)
 
-        canvas.create_window((0, 0), window=self.scroll_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar = ttk.Scrollbar(main_window, orient="vertical", command=self.display_canvas.yview)
         scrollbar.pack(side="right", fill="y")
+        self.display_canvas.configure(yscrollcommand=scrollbar.set)
 
-    def clear(self):
-        for w in self.scroll_frame.winfo_children():
-            w.destroy()
+        self.internal_scroll_frame = ttk.Frame(self.display_canvas)
+        self.display_canvas.create_window((0, 0), window=self.internal_scroll_frame, anchor="nw")
+        self.internal_scroll_frame.bind("<Configure>", lambda event: self.display_canvas.configure(scrollregion=self.display_canvas.bbox("all")))
 
-    def generate(self):
-        self.clear()
+    def handle_generate_click(self):
+        for child in self.internal_scroll_frame.winfo_children():
+            child.destroy()
 
-        timetable, days = generate_solution(self.include_friday.get())
+        active_days_list = []
+        for day in self.day_names:
+            if self.exclude_check_variables[day].get() == False:
+                active_days_list.append(day)
 
-        if timetable is None:
-            tk.Label(self.scroll_frame, text="No solution found").pack()
+        if not active_days_list:
+            tk.Label(self.internal_scroll_frame, text="Error: Please keep at least one day active!").pack()
             return
 
-        for cls, data in timetable.items():
+        def get_total_minutes(time_string):
+            parts = time_string.split(":")
+            return int(parts[0]) * 60 + int(parts[1])
 
-            tk.Label(self.scroll_frame, text=cls, font=("Arial", 12, "bold")).pack()
+        start_total_minutes = get_total_minutes(self.start_time_dropdown.get())
+        end_total_minutes = get_total_minutes(self.end_time_dropdown.get())
+        minutes_per_slot = int(self.slot_length_dropdown.get())
 
-            frame = tk.Frame(self.scroll_frame)
-            frame.pack(pady=5)
+        available_minutes = end_total_minutes - start_total_minutes
+        total_slots_needed = available_minutes // minutes_per_slot
 
-            tk.Label(frame, text="Day/Time", borderwidth=1, relief="solid").grid(row=0, column=0)
+        if total_slots_needed <= 0:
+            tk.Label(self.internal_scroll_frame, text="Error: End time must be later than start time!").pack()
+            return
 
-            for i, t in enumerate(TIME_LABELS):
-                tk.Label(frame, text=t, borderwidth=1, relief="solid").grid(row=0, column=i+1)
+        time_header_labels = []
+        for index in range(total_slots_needed):
+            minutes_at_this_slot = start_total_minutes + (index * minutes_per_slot)
+            hour_display = minutes_at_this_slot // 60
+            minute_display = minutes_at_this_slot % 60
+            time_header_labels.append(f"{hour_display:02d}:{minute_display:02d}")
 
-            for r, d in enumerate(days):
-                tk.Label(frame, text=d, borderwidth=1, relief="solid").grid(row=r+1, column=0)
+        final_timetable = generate_timetable_logic(active_days_list, total_slots_needed)
 
-                for c in range(10):
-                    val = data[d][c]
-                    text = f"{val[0]}\n{val[1]}" if val else "-"
+        if final_timetable is None:
+            tk.Label(self.internal_scroll_frame, text="Could not find a valid schedule. Try adding more time or days.").pack(pady=20)
+            return
 
-                    tk.Label(frame, text=text, width=11, height=2,
-                             borderwidth=1, relief="solid").grid(row=r+1, column=c+1)
+        for class_name, days_data in final_timetable.items():
+            tk.Label(self.internal_scroll_frame, text=f"SCHEDULE FOR: {class_name}", font=("Arial", 14, "bold")).pack(pady=(25, 5))
+            
+            table_container = ttk.Frame(self.internal_scroll_frame)
+            table_container.pack(padx=10, pady=10)
 
+            tk.Label(table_container, text="Day / Time", relief="ridge", width=12).grid(row=0, column=0)
+            for column_index, time_string in enumerate(time_header_labels):
+                tk.Label(table_container, text=time_string, relief="ridge", width=12).grid(row=0, column=column_index + 1)
 
-# ---------------------------
-# RUN
-# ---------------------------
+            for row_index, day_name in enumerate(active_days_list):
+                tk.Label(table_container, text=day_name, relief="ridge", width=12).grid(row=row_index + 1, column=0)
+                for column_index in range(total_slots_needed):
+                    slot_content = days_data[day_name][column_index]
+                    
+                    cell_text = "-"
+                    cell_color = "white"
+                    
+                    if slot_content is not None:
+                        subject_name, room_name = slot_content
+                        cell_text = subject_name + "\n" + room_name
+                        if "-L" in subject_name:
+                            cell_color = "#E1FFD7" 
+                        else:
+                            cell_color = "#E1F2FF" 
 
-root = tk.Tk()
-app = App(root)
-root.mainloop()
+                    cell_label = tk.Label(table_container, text=cell_text, bg=cell_color, relief="solid", 
+                                          borderwidth=1, width=12, height=3, font=("Arial", 9))
+                    cell_label.grid(row=row_index + 1, column=column_index + 1)
+
+root_window = tk.Tk()
+app_instance = SimpleTimetableUI(root_window)
+root_window.mainloop()
